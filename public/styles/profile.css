@@ -1,0 +1,174 @@
+.nav-auth{
+    height: 64px;
+}
+
+.border-invisible{
+    border: none;
+    margin-bottom: 20px;
+}
+
+.ticket{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.ticket-info{
+    margin-right: 30px;
+    width: 20%;
+}
+
+.ticket-info p{
+    margin: 0;
+}
+
+.qr-code{
+    width: 150px;
+    height: 150px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.valid{
+    color: green;
+}
+
+.used{
+    color: orange;
+}
+
+.expired{
+    color: red;
+}
+
+h2{
+    margin: 0 0 8px 0;
+    font-size: 20px;
+}
+
+p{
+    margin: 0;
+}
+
+.input-grouped{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.margin-bottom{
+    margin-bottom: 12px;
+}
+
+.margin-bottom-double{
+    margin-bottom: 24px;
+}
+
+#my-data{
+    width: 50%;
+}
+
+.input-field{
+    width: 40%;
+}
+
+.welcome{
+    color: green;
+    margin: 0 0 20px 0;
+}
+
+.error{
+    color: red;
+    margin: 0 0 20px 0;
+}
+
+#load-more{
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    height: 24px;
+    align-self: center;
+    border-radius: 4px;
+    background-color: rgb(2, 77, 223);;
+    margin: 20px 0 10px 0;
+}
+
+#load-more:hover{
+    background-color: rgb(1, 57, 167);
+    cursor: pointer;
+}
+
+#load-more p{
+    color: white;
+    font-weight: 600;
+}
+
+.hide{
+    display: none;
+}
+
+.button-submit {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 2.43;
+    min-width: 60px;
+    text-align: center;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    background-color: red;
+    padding: 10px 12px;
+    border-radius: 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.profilepic{
+    background-image: url("../cards/profilepic.jpg");
+}
+
+.profilehero{
+    padding: 16px 16px 24px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-height: 100px;
+    overflow: hidden;
+    color: rgb(255, 255, 255);
+    text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;
+    background-color: rgb(18, 18, 18);
+}
+
+@media (min-width: 900px) {
+    .profilehero {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+
+@media (min-width: 720px) {
+    .profilehero {
+        padding-top: 24px;
+        padding-bottom: 48px;
+    }
+}
+
+@media (max-width: 900px) {
+    #my-data{
+        width: 70%;
+    }
+}
+
+@media (max-width: 720px) {
+    #my-data{
+        width: 90%;
+    }
+
+    .event-buy{
+        margin-left: 25px;
+    }
+}
