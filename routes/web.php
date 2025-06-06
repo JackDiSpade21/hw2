@@ -18,6 +18,8 @@ Route::get('api/getownedtickets', [ApiController::class, 'getOwnedTickets']);
 Route::get('profile', [LoginController::class, 'get_profile']);
 
 Route::get('artist/{id}', [ArtistController::class, 'get_artistpage']);
+Route::get('buy/{id}', [ArtistController::class, 'get_buypage']);
+Route::post('buy/{id}', [ArtistController::class, 'post_buypage']);
 
 Route::get('logout', function () {
     session()->flush();

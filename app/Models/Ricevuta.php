@@ -8,9 +8,16 @@ class Ricevuta extends Model
 {
     protected $table = 'Ricevuta';
     protected $primaryKey = 'ID';
-    public $incrementing = true;
     public $timestamps = false;
-    protected $guarded = [];
+    protected $fillable = [
+        'ID',
+        'Totale',
+        'Quantita',
+        'Acquisto',
+        'Evento',
+        'Utente',
+        'Informazioni',
+    ];
 
     public function evento()
     {

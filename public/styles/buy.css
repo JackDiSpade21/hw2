@@ -170,6 +170,7 @@ select {
     border-style: solid;
     border-color: rgb(153, 153, 153);
     outline: none;
+    box-sizing: border-box;
 }
 
 input[type="text"]:hover,

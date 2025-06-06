@@ -8,9 +8,15 @@ class Biglietto extends Model
 {
     protected $table = 'Biglietto';
     protected $primaryKey = 'ID';
-    public $incrementing = true;
     public $timestamps = false;
-    protected $guarded = [];
+    protected $fillable = [
+        'ID',
+        'Codice',
+        'Stato',
+        'Tipo',
+        'Evento',
+        'Ricevuta',
+    ];
 
     public function posto()
     {
