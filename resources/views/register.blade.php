@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url('styles/auth.css') }}">
     <script src="{{ url('scripts/footer.js') }}" defer></script>
     <script src="{{ url('scripts/auth.js') }}" defer></script>
+    <script>
+        const BASE_URL = "{{ url('/') }}";
+    </script>
     <link rel="stylesheet" type="text/css" href="{{ url('styles/nav.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url('styles/header.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url('styles/footer.css') }}">

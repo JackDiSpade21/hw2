@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{ url('styles/homepage.css') }}">
+    <script>
+        const BASE_URL = "{{ url('/') }}";
+    </script>
     <script src="{{ url('scripts/nav.js') }}" defer></script>
     <script src="{{ url('scripts/footer.js') }}" defer></script>
     <script src="{{ url('scripts/menu.js') }}" defer></script>

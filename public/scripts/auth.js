@@ -58,7 +58,7 @@ function registerValidation(event) {
     }
 
     if(email){
-        fetch('http://localhost/hw1/api/checkemail.php?Mail=' + encodeURIComponent(String(email).toLowerCase()))
+        fetch(BASE_URL + '/api/checkmail/' + encodeURIComponent(String(email).toLowerCase()))
             .then(onResponseMail, onError)
             .then(onJSONMail);
     }

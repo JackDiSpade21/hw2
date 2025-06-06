@@ -1,4 +1,4 @@
-fetch('http://localhost/hw1/api/gethomecards.php')
+fetch(BASE_URL+'/api/gethomecards')
     .then(onResponseTicket, onError)
     .then(onJSONTicket);
 
@@ -127,7 +127,7 @@ function createCard(name, type, imageUrl, section, classes, id) {
     solidov.classList.add('solidov');
 
     const freccia = document.createElement('img');
-    freccia.src = './icons/freccia.png';
+    freccia.src = BASE_URL + '/icons/freccia.png';
     solidov.appendChild(freccia);
 
     overlay.appendChild(solidov);
