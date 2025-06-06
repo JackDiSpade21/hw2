@@ -10,3 +10,4 @@ Route::get('/getartistdetails/{id}', [ApiController::class, 'getArtista']);
 Route::get('/geteventdetails/{id}', [ApiController::class, 'getEventiByArtista']);
 Route::get('/getqrcode/{codice}', [ApiController::class, 'getQrCode']);
 Route::get('/getspotifydetail/{id}', [ApiController::class, 'getSpotifyTracks']);
+Route::get('/searchresults/{query}', [ApiController::class, 'searchResults']);

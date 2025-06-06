@@ -13,14 +13,14 @@ loadMoreButton.addEventListener('click', loadMore);
 let start = 0;
 let count = 5;
 
-fetch("http://localhost/hw1/api/getownedtickets.php")
+fetch(BASE_URL + "/api/getownedtickets")
     .then(onResponse, onError)
     .then(onJSONTicket);
 
 function loadMore() {
     start += count;
     count += 5;
-    fetch("http://localhost/hw1/api/getownedtickets.php?start=" + start + "&count=" + count)
+    fetch(BASE_URL + "/api/getownedtickets?start=" + start + "&count=" + count)
         .then(onResponse, onError)
         .then(onJSONTicket);
 }
@@ -173,7 +173,7 @@ function ticketDetails() {
     }
 
     onJSONEvent.lastButton = this;
-    fetch("http://localhost/hw1/api/getownedticketdetails.php?id=" + eventId)
+    fetch(BASE_URL + "/api/getownedticketdetails/" + eventId)
         .then(onResponse, onError)
         .then(onJSONEvent);
 }

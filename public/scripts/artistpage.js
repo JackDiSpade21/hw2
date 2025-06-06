@@ -7,7 +7,7 @@ const eventId = main.dataset.id;
 const eventBox = document.querySelector("#event-box");
 const eventiFuturi = document.querySelector("#eventi-futuri");
 
-fetch('http://localhost/hw1/api/geteventdetail.php?id=' + eventId)
+fetch(BASE_URL + '/api/geteventdetails/' + eventId)
     .then(onResponseTicket, onError)
     .then(onJSONTicket);
 
@@ -62,12 +62,12 @@ function createEventEntry(eventArray) {
         eventInfo.appendChild(eventDesc);
 
         const eventLink = document.createElement('a');
-        eventLink.href = "./buy.php?id=" + evento.ID;
+        eventLink.href = BASE_URL + "/buy/" + evento.ID;
         eventLink.classList.add('event-buy');
         const eventLinkText = document.createElement('p');
         eventLinkText.textContent = "Biglietti";
         const eventLinkIcon = document.createElement('img');
-        eventLinkIcon.src = "./icons/freccia.png";
+        eventLinkIcon.src = BASE_URL + "/icons/freccia.png";
         eventLink.appendChild(eventLinkText);
         eventLink.appendChild(eventLinkIcon);
         eventInfo.appendChild(eventLink);
@@ -82,7 +82,7 @@ function onJSONTicket(json) {
     const internazionali = [];
 
     for (const evento of json) {
-        if (evento.Nazionale === "1") {
+        if (evento.Nazionale === 1) {
             nazionali.push(evento);
         } else {
             internazionali.push(evento);
@@ -143,14 +143,14 @@ function togglefaqSection(event){
                 faqSection[i].classList.add("lista-faq");
                 event.currentTarget.classList.add("elenco-faq-active");
                 event.currentTarget.classList.remove("elenco-faq");
-                imgChild.src = "./icons/uparrowblack.png";
+                imgChild.src = BASE_URL + "/icons/uparrowblack.png";
             }
             else{
                 faqSection[i].classList.add("hidden");
                 faqSection[i].classList.remove("lista-faq");
                 event.currentTarget.classList.remove("elenco-faq-active");
                 event.currentTarget.classList.add("elenco-faq");
-                imgChild.src = "./icons/downarrowblack.png";
+                imgChild.src = BASE_URL + "/icons/downarrowblack.png";
             }
 
             break;

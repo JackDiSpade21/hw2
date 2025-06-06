@@ -31,11 +31,11 @@
         </div>
     </div>
     <div id="functions">
-        <a id="login" href="{{ session('Mail') ? url('profile') : url('login') }}">
+        <a id="login" href="{{ $nome ? url('profile') : url('login') }}">
             <img id="person" src="{{ url('icons/person.png') }}">
             <p>
-                @if(session('Mail'))
-                    {{ strlen(session('Nome')) > 14 ? substr(session('Nome'), 0, 14) . '..' : session('Nome') }}
+                @if($nome)
+                    {{ strlen($nome) > 14 ? substr($nome, 0, 14) . '..' : $nome }}
                 @else
                     Accedi/Registrati
                 @endif

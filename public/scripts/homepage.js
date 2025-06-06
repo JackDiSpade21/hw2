@@ -49,7 +49,7 @@ function onJSONTicket(json) {
             hero.style.backgroundImage = 'url(' + event.imageUrl + ')';
             herodes.querySelector('h3').textContent = event.name;
             herodes.querySelector('p').textContent = event.herodes;
-            herodes.querySelector('a').href = 'eventpage.php?id=' + event.id;
+            herodes.querySelector('a').href = BASE_URL + '/artist/' + event.id;
             index++;
             continue;
         }
@@ -100,7 +100,7 @@ function createCard(name, type, imageUrl, section, classes, id) {
 
     const article = document.createElement('a');
     article.classList.add('card');
-    article.href = 'eventpage.php?id=' + id;
+    article.href = BASE_URL + '/artist/' + id;
 
     if(classes) {
         for (let i in classes) {

@@ -91,6 +91,10 @@ body{
     font-weight: 600;
 }
 
+#event-nav .width-limiter{
+    height: 100%;
+}
+
 .width-limiter{
     width: 100%;
     max-width: 1248px;

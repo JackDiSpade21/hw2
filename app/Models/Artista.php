@@ -19,4 +19,9 @@ class Artista extends Model
     {
         return $this->hasMany(Evento::class, 'Artista', 'ID');
     }
+
+    public function scaletta()
+    {
+        return $this->hasMany(Scaletta::class, 'Artista', 'ID');
+    }
 }

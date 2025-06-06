@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Models\Artista;
 use App\Models\Utente;
 use App\Models\Evento;
+use App\Models\Ricevuta;
+use App\Models\Biglietto;
 
 class ApiController extends Controller
 {
@@ -112,7 +115,77 @@ class ApiController extends Controller
 
         return response()->json([
             'artistImg' => $artistImg,
-            'tracks' => $tracks_json['tracks'] ?? []
+            'tracks' => $tracks_json['tracks']
+        ]);
+    }
+    public function getOwnedTicketDetails($ricevutaId, Request $request)
+    {
+        $email = session('Mail');
+
+        if (!$email || !$ricevutaId) {
+            return response()->json([]);
+        }
+
+        $ricevuta = Ricevuta::where('ID', $ricevutaId)
+            ->where('Utente', $email)
+            ->first();
+
+        if (!$ricevuta) {
+            return response()->json([]);
+        }
+
+        $biglietti = Biglietto::with(['evento', 'posto'])
+            ->where('Ricevuta', $ricevutaId)
+            ->get();
+
+        $today = date('Y-m-d');
+
+        foreach ($biglietti as $biglietto) {
+            if ($biglietto->evento && $biglietto->evento->DataEvento < $today && $biglietto->Stato != 2) {
+                $biglietto->Stato = 2;
+                $biglietto->save();
+            }
+        }
+
+        return response()->json($biglietti);
+    }
+    public function getOwnedTickets(Request $request)
+    {
+        $email = session('Mail');
+        if (!$email) {
+            return response()->json([]);
+        }
+
+        $start = intval($request->query('start', 0));
+        $count = intval($request->query('count', 5));
+
+        $ricevute = Ricevuta::with(['evento.artista'])
+            ->where('Utente', $email)
+            ->orderByDesc('Acquisto')
+            ->skip($start)
+            ->take($count)
+            ->get();
+
+        return response()->json($ricevute);
+    }
+    public function searchResults($query)
+    {
+        $query = trim($query);
+        if (empty($query)) {
+            return response()->json([]);
+        }
+
+        $artisti = Artista::where('Nome', 'LIKE', "%$query%")
+            ->orWhere('Categoria', 'LIKE', "%$query%")
+            ->get();
+
+        $eventi = Evento::where('Nome', 'LIKE', "%$query%")
+            ->orWhere('Luogo', 'LIKE', "%$query%")
+            ->get();
+
+        return response()->json([
+            'artisti' => $artisti,
+            'eventi' => $eventi
         ]);
     }
 }

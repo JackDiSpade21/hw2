@@ -20,6 +20,27 @@ class LoginController extends Controller
         return view('login');
     }
 
+    public function get_homepage()
+    {
+        $nome = session('Nome', null);
+        return view('homepage')
+            ->with('nome', $nome);
+    }
+
+    public function get_profile()
+    {
+        if(!session('Mail')) {
+            return redirect('/login');
+        }
+
+        $utente = Utente::where('Mail', session('Mail'))->first();
+
+        return view('profile')
+            ->with('utente', $utente)
+            ->with('firstLogin', request()->query('firstLogin', false))
+            ->with('buy', request()->query('buy', 0));
+    }
+
     public function do_register(\Illuminate\Http\Request $request)
     {
 
@@ -126,8 +147,10 @@ class LoginController extends Controller
         $user->save();
 
         session(['Mail' => $user->Mail, 'Nome' => $user->Nome]);
-        //poi dovrà portare su profile con ?firstLogin=true
-        return redirect('/');
+        return view('profile')
+            ->with('utente', $user)
+            ->with('firstLogin', true)
+            ->with('buy', 0);
     }
 
     public function do_login(\Illuminate\Http\Request $request)

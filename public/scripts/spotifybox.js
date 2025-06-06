@@ -31,11 +31,11 @@ function openSpotifyBox(event) {
     event.stopPropagation();
 
     if(!spotifyLoaded){
-        fetch("./api/getspotifydetail.php?id=" + id)
+        fetch(BASE_URL + "/api/getspotifydetail/" + id)
             .then(onResponseArtist, onError)
             .then(onJSONArtist);
 
-        spotifyPic.src = './icons/person.png';
+        spotifyPic.src = BASE_URL + '/icons/person.png';
         spotifyTitle.innerHTML = 'Brani popolari di <br>' + name;
     }else{
         modal_spotify.classList.remove('hidden');
@@ -99,7 +99,7 @@ function createSongBox(canzone, album, image, url) {
     const playButton = document.createElement('a');
     playButton.href = url;
     const playImg = document.createElement('img');
-    playImg.src = './icons/play-button-spot.png';
+    playImg.src = BASE_URL + '/icons/play-button-spot.png';
     playButton.appendChild(playImg);
     songbox.appendChild(playButton);
 
