@@ -66,7 +66,7 @@ function onJSONTicket(json) {
         + '</strong> biglietti il <strong>' + item.Acquisto + '</strong> per <strong>' + item.Totale + '€</strong>';
 
         const eventDetails = document.createElement('p');
-        eventDetails.textContent = item.Luogo + ' - ' + item.DataEvento + ' - ' + item.Ora;
+        eventDetails.textContent = item.evento.Luogo + ' - ' + item.evento.DataEvento + ' - ' + item.evento.Ora;
 
         eventDesc.appendChild(eventTitle);
         eventDesc.appendChild(ticketsInfo);
@@ -81,7 +81,7 @@ function onJSONTicket(json) {
         dettaglioP.textContent = 'Dettaglio';
 
         const arrowImg = document.createElement('img');
-        arrowImg.src = './icons/freccia.png';
+        arrowImg.src = BASE_URL + '/icons/freccia.png';
 
         eventBuy.appendChild(dettaglioP);
         eventBuy.appendChild(arrowImg);
@@ -100,7 +100,6 @@ function onJSONEvent(json) {
     const results = json.length;
     const eventEntry = onJSONEvent.lastButton.closest('.event-entry');
 
-    // Se i ticket sono già visibili, non rigenerarli
     if (eventEntry.querySelector('.ticket')) return;
 
     for (let i = 0; i < results; i++) {
@@ -111,7 +110,7 @@ function onJSONEvent(json) {
 
         const qrImg = document.createElement('img');
         qrImg.classList.add('qr-code');
-        qrImg.src = "http://localhost/hw1/api/getqrcode.php?codice=" + encodeURIComponent(item.Codice);
+        qrImg.src = BASE_URL + '/api/getqrcode/' + encodeURIComponent(item.Codice);
 
         const ticketInfo = document.createElement('div');
         ticketInfo.classList.add('ticket-info');
@@ -120,20 +119,20 @@ function onJSONEvent(json) {
         idStrong.textContent = 'ID #' + String(item.ID).padStart(6, '0');
 
         const seatP = document.createElement('p');
-        seatP.textContent = item.NomePosto;
+        seatP.textContent = item.posto.Nome;
 
         const validLabel = document.createElement('label');
         validLabel.classList.add('valid');
         switch (item.Stato) {
-            case '0':
+            case 0:
                 validLabel.textContent = 'Valido';
                 validLabel.classList.add('valid');
                 break;
-            case '1':
+            case 1:
                 validLabel.textContent = 'Usato';
                 validLabel.classList.add('used');
                 break;
-            case '2':
+            case 2:
                 validLabel.textContent = 'Scaduto';
                 validLabel.classList.add('expired');
                 break;
@@ -159,7 +158,7 @@ function ticketDetails() {
     const eventEntry = this.closest('.event-entry');
     const arrowImg = this.querySelector('img');
 
-    arrowImg.src = './icons/downarrow.png';
+    arrowImg.src = BASE_URL + '/icons/downarrow.png';
 
     const tickets = eventEntry.querySelectorAll('.ticket');
     if (tickets.length > 0) {
@@ -167,7 +166,7 @@ function ticketDetails() {
             t.classList.toggle('hide');
         }
         if ([...tickets].every(t => t.classList.contains('hide'))) {
-            arrowImg.src = './icons/freccia.png';
+            arrowImg.src = BASE_URL + '/icons/freccia.png';
         }
         return;
     }

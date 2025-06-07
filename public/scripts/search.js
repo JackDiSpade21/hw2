@@ -1,56 +1,32 @@
 const form = document.querySelector('#search-form');
-form.addEventListener('submit', search);
 const loadMoreButton = document.querySelector('#load-more');
-loadMoreButton.addEventListener('click', loadMore);
 const eventBox = document.querySelector('#event-list');
-window.addEventListener('DOMContentLoaded', searchStart);
 
-let start_artisti = 0;
-let count_artisti = 5;
-let start_eventi = 0;
-let count_eventi = 5;
-let lastSearch = '';
+let searchStart = 0;
+const searchCount = 5;
+let lastQuery = '';
+let hasMore = false;
 
-function search(event) {
-    const searchInput = form.searchInput.value;
+form.addEventListener('submit', function (event) {
     event.preventDefault();
-
-    if (searchInput === '') {
-        return;
-    }
-    lastSearch = searchInput;
-    start_artisti = 0;
-    count_artisti = 5;
-    start_eventi = 0;
-    count_eventi = 5;
-
+    const searchInput = form.searchInput.value.trim();
+    if (!searchInput) return;
+    lastQuery = searchInput;
+    searchStart = 0;
     fetchResults(false);
-}
+});
 
-function loadMore() {
-    start_artisti += count_artisti;
-    start_eventi += count_eventi;
+loadMoreButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    searchStart += searchCount;
     fetchResults(true);
-}
+});
 
 function fetchResults(append) {
-    fetch("http://localhost/hw1/api/searchresults.php?search=" + encodeURIComponent(lastSearch) +
-        "&start_artisti=" + start_artisti + "&count_artisti=" + count_artisti +
-        "&start_eventi=" + start_eventi + "&count_eventi=" + count_eventi)
-        .then(onResponse, onError)
-        .then(json => onJSONResults(json, append));
-}
-
-function onResponse(response) {
-    if (response.ok) {
-        return response.json();
-    }
-    else
-        return null;
-}
-
-function onError(err) {
-    console.error('Fetch problem: ' + err.message);
+    fetch(BASE_URL + '/api/searchresults/' + encodeURIComponent(lastQuery) + '?start=' + searchStart + '&count=' + searchCount)
+        .then(response => response.ok ? response.json() : Promise.reject())
+        .then(json => onJSONResults(json, append))
+        .catch(err => console.error('Fetch error:', err));
 }
 
 function createCard(item, tipo) {
@@ -70,18 +46,18 @@ function createCard(item, tipo) {
     const eventBuy = document.createElement('a');
     eventBuy.classList.add('event-buy');
 
-    if(tipo === 'artista'){
+    if (tipo === 'artista') {
         eventTitle.textContent = item.Nome;
-        eventSubtitle.textContent = item.Categoria + " - " + item.Genere;
-        eventDetails.textContent = item.Hero;
+        eventSubtitle.textContent = item.Categoria + (item.Genere ? " - " + item.Genere : "");
+        eventDetails.textContent = item.Hero || '';
         dettaglioP.textContent = 'Profilo';
-        eventBuy.href = './eventpage.php?id=' + item.ID;
-    } else if(tipo === 'evento'){
+        eventBuy.href = BASE_URL + '/artist/' + item.ID;
+    } else if (tipo === 'evento') {
         eventTitle.textContent = item.Nome;
-        eventSubtitle.textContent = item.NomeArtista;
+        eventSubtitle.textContent = item.Nome || '';
         eventDetails.textContent = item.Luogo + " - " + item.DataEvento + " - " + item.Ora;
         dettaglioP.textContent = 'Acquista';
-        eventBuy.href = './buy.php?id=' + item.ID;
+        eventBuy.href = BASE_URL + '/buy/' + item.ID;
     }
 
     eventDesc.appendChild(eventTitle);
@@ -89,7 +65,7 @@ function createCard(item, tipo) {
     eventDesc.appendChild(eventDetails);
 
     const arrowImg = document.createElement('img');
-    arrowImg.src = './icons/freccia.png';
+    arrowImg.src = BASE_URL + '/icons/freccia.png';
 
     eventBuy.appendChild(dettaglioP);
     eventBuy.appendChild(arrowImg);
@@ -114,26 +90,24 @@ function createResults(json, append = false) {
 }
 
 function onJSONResults(json, append) {
-    if ((json.artisti.length < count_artisti) && (json.eventi.length < count_eventi)) {
-        loadMoreButton.classList.add('hide');
-        loadMoreButton.classList.remove('load-more');
-    } else {
+    createResults(json, append);
+
+    if (json.hasMoreArtisti || json.hasMoreEventi) {
         loadMoreButton.classList.remove('hide');
         loadMoreButton.classList.add('load-more');
+    } else {
+        loadMoreButton.classList.add('hide');
+        loadMoreButton.classList.remove('load-more');
     }
-    createResults(json, append);
 }
 
-function searchStart() {
+window.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     if (params.has('search')) {
         const value = params.get('search');
         form.searchInput.value = value;
-        lastSearch = value;
-        start_artisti = 0;
-        count_artisti = 5;
-        start_eventi = 0;
-        count_eventi = 5;
+        lastQuery = value;
+        searchStart = 0;
         fetchResults(false);
     }
-}
+});

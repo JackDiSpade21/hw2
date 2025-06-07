@@ -27,6 +27,13 @@ class LoginController extends Controller
             ->with('nome', $nome);
     }
 
+    public function get_search()
+    {
+        $nome = session('Nome', null);
+        return view('search')
+            ->with('nome', $nome);
+    }
+
     public function get_profile()
     {
         if(!session('Mail')) {

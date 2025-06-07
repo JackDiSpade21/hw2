@@ -151,9 +151,8 @@ class ArtistController extends Controller
         }
 
         DB::transaction(function () use ($evento, $utente, $totale, $quantita, $informazioni, $request) {
-            $lastRicevuta = Ricevuta::orderByDesc('ID')->first();
-            $nextRicevutaId = $lastRicevuta ? $lastRicevuta->ID + 1 : 0;
-
+            $nextRicevutaId = Ricevuta::count() + 1;
+            
             $ricevuta = Ricevuta::create([
                 'ID' => $nextRicevutaId,
                 'Totale' => $totale,
@@ -169,8 +168,7 @@ class ArtistController extends Controller
                     $tipo_id = intval(str_replace('quantity_', '', $key));
                     $qty = intval($value);
                     for ($i = 0; $i < $qty; $i++) {
-                        $lastBiglietto = Biglietto::orderByDesc('ID')->first();
-                        $nextBigliettoId = $lastBiglietto ? $lastBiglietto->ID + 1 : 0;
+                        $nextBigliettoId = Biglietto::count() + 1;
 
                         $codice = bin2hex(random_bytes(20));
                         Biglietto::create([
@@ -178,8 +176,8 @@ class ArtistController extends Controller
                             'Codice' => $codice,
                             'Evento' => $evento->ID,
                             'Tipo' => $tipo_id,
-                            'Ricevuta' => $ricevuta->ID,
-                            'Stato' => 1,
+                            'Ricevuta' => $nextRicevutaId,
+                            'Stato' => 0,
                         ]);
                     }
                 }

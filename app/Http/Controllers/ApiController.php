@@ -168,24 +168,34 @@ class ApiController extends Controller
 
         return response()->json($ricevute);
     }
-    public function searchResults($query)
+    public function searchResults($query, Request $request)
     {
         $query = trim($query);
         if (empty($query)) {
             return response()->json([]);
         }
 
-        $artisti = Artista::where('Nome', 'LIKE', "%$query%")
-            ->orWhere('Categoria', 'LIKE', "%$query%")
-            ->get();
+        $start = intval($request->query('start', 0));
+        $count = intval($request->query('count', 5));
 
-        $eventi = Evento::where('Nome', 'LIKE', "%$query%")
-            ->orWhere('Luogo', 'LIKE', "%$query%")
-            ->get();
+        $artistiQuery = Artista::where('Nome', 'LIKE', "%$query%")
+            ->orWhere('Categoria', 'LIKE', "%$query%");
+        $eventiQuery = Evento::where('Nome', 'LIKE', "%$query%")
+            ->orWhere('Luogo', 'LIKE', "%$query%");
+
+        $totalArtisti = $artistiQuery->count();
+        $totalEventi = $eventiQuery->count();
+
+        $artisti = $artistiQuery->skip($start)->take($count)->get();
+        $eventi = $eventiQuery->skip($start)->take($count)->get();
 
         return response()->json([
             'artisti' => $artisti,
-            'eventi' => $eventi
+            'eventi' => $eventi,
+            'totalArtisti' => $totalArtisti,
+            'totalEventi' => $totalEventi,
+            'hasMoreArtisti' => ($start + $count) < $totalArtisti,
+            'hasMoreEventi' => ($start + $count) < $totalEventi,
         ]);
     }
 }
